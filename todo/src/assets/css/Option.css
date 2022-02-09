@@ -1,0 +1,14 @@
+.Option-Conatiner {
+    width: 50vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Option-Conatiner .add {
+    cursor: pointer;
+}
+
+.Option-Conatiner .addDelete-container {
+    display: flex;
+    /* width: 10%; */
+}

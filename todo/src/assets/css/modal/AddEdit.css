@@ -1,0 +1,19 @@
+.AddEdit-Conatiner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(34, 34, 34, 0.63);
+    z-index: 99;
+}
+
+.AddEdit-Conatiner .addEdit-conatiner {
+    width: 30vw;
+    height: 60vh;
+    background: rgb(255, 255, 255);
+    border-radius: 20px;
+}

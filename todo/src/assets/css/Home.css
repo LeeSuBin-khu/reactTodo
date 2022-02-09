@@ -1,0 +1,12 @@
+.Home-Conatiner {
+    width: 100vw;
+    height: 100vh; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* background-image: url('../img/artur-luczka-loAfOVk1eNc-unsplash.jpg');
+    background-repeat : no-repeat;
+    background-size : cover; */
+    overflow: hidden;
+}
