@@ -166,8 +166,13 @@ function List() {
             {TodoList.map( (todo, idx) => (
                 <div className="item-container" onClick={ItemClickHandler} key={idx} id={todo.id}>
                     <div className="title-container">
-                        <img src={check} className="check" id={todo.id} onClick={checkClickHandler}/>
-                        <span className="todo-title">{todo.title}</span>
+                        <div>
+                            <img src={check} className="check" id={todo.id} onClick={checkClickHandler}/>
+                            <span className="todo-title">{todo.title}</span>
+                        </div>
+                        <div className="tag-container">
+                            {todo.tag.map( (item, idx) => <div className="tag" style={{background: item.bgColor, color: item.color}} key={idx}>{item.name}</div>)}
+                        </div>
                     </div>
                     <div className="btn-container">
                         <button className="edit" onClick={editClickHandler}>수정</button>

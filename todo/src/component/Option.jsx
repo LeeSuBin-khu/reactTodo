@@ -35,12 +35,8 @@ function Option() {
                     <option value="complete">완료</option>
                     <option value="incomplete">미완료</option>
                 </select>
-                <select></select>
-                <select></select>
-                <select></select>
             </div>
             <div className="addDelete-container">
-                <div className="delete" onClick={AddOpenHandler}>-</div>
                 <div className="add" onClick={AddOpenHandler}>+</div>
             </div>
             <Add open={AddModalOpen} close={AddCloseHandler} />
