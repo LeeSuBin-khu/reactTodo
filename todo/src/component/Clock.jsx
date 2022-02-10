@@ -7,20 +7,35 @@ function Clock() {
     const [sec, setSec] = useState();
     
     const getTime = () => {
-        let date = new Date();
-        setHour(String(date.getHours()).padStart(2, "0"));
-        setMin(String(date.getMinutes()).padStart(2, "0"));
-        setSec(String(date.getSeconds()).padStart(2, "0"));
+        try {
+            let date = new Date();
+            setHour(String(date.getHours()).padStart(2, "0"));
+            setMin(String(date.getMinutes()).padStart(2, "0"));
+            setSec(String(date.getSeconds()).padStart(2, "0"));
+        } catch(err) {
+            console.log(err)
+        } finally {
+            console.log("qwer")
+        }
+        
     }
 
     useEffect(() => {
-        setInterval(getTime, 1000);
+        let time = setInterval(getTime, 1000);
+        return () => {
+            clearInterval(time);
+        }
     }, [])
 
     return(
+        <>
+        {hour!==undefined?(
         <div className="Clock-Conatiner">
             {hour}:{min}:{sec}
         </div>
+        ):<div className="Clock-Conatiner">todo</div>
+        }
+        </>
     );
 }
 

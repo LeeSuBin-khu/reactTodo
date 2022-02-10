@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import Edit from './modal/Edit';
 import DeleteTodo from './modal/Delete';
 
 import check from '../assets/img/check.png';
-import '../assets/css/List.css';
+import '../assets/css/List.scss';
 
 function List() {
+    const navigate = useNavigate();
     const [TodoList, setTodoList] = useState([]);
     const [TagList, setTagList] = useState([]);
     const [CompleteTemp, setCompleteTemp] = useState([]);
@@ -46,9 +48,7 @@ function List() {
     //...
 
     const ItemClickHandler = ({ target }) => {
-        if(target.className !== 'check' && target.className !== 'edit' && target.className !== 'delete') {
-            window.location.replace('/detail');
-        }
+        navigate('/detail', { state: {id: target.getAttribute('id')} });
     }
 
     useEffect(() => {
@@ -67,7 +67,6 @@ function List() {
             } else {
                 localStorage.setItem('todo', JSON.stringify([]));
             }
-            //localStorage.getItem('tag')?setTagList(JSON.parse(localStorage.getItem('tag'))):localStorage.setItem('tag', JSON.stringify([]));
         } else if(isComplete === false) {
             setTodoList([]);
             if(localStorage.getItem('todo')) {
@@ -80,7 +79,6 @@ function List() {
             } else {
                 localStorage.setItem('todo', JSON.stringify([]));
             }
-            //localStorage.getItem('tag')?setTagList(JSON.parse(localStorage.getItem('tag'))):localStorage.setItem('tag', JSON.stringify([]));
         }
     }, [isAdd, completeItem, isEdit, isDelete, isComplete])
 
@@ -164,15 +162,11 @@ function List() {
         <>
         <div className="List-Conatiner">
             {TodoList.map( (todo, idx) => (
-                <div className="item-container" onClick={ItemClickHandler} key={idx} id={todo.id}>
+                <div className="item-container" key={idx} id={todo.id}>
                     <div className="title-container">
-                        <div>
                             <img src={check} className="check" id={todo.id} onClick={checkClickHandler}/>
-                            <span className="todo-title">{todo.title}</span>
-                        </div>
-                        <div className="tag-container">
-                            {todo.tag.map( (item, idx) => <div className="tag" style={{background: item.bgColor, color: item.color}} key={idx}>{item.name}</div>)}
-                        </div>
+                            <span className="todo-title" id={todo.id} onClick={ItemClickHandler}>{todo.title}</span>
+                            {todo.tag.map( (item, idx) => <div className="tag" style={{background: item.bgColor, color: item.color, opacity: '0.8'}} key={idx}>{item.name}</div>)}  
                     </div>
                     <div className="btn-container">
                         <button className="edit" onClick={editClickHandler}>수정</button>

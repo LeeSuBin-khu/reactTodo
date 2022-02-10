@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, createElement } from "react";
 import { useSelector, useDispatch  } from 'react-redux';
 
-import '../../assets/css/modal/AddEdit.css';
+import '../../assets/css/modal/AddEdit.scss';
 
 function Add(props) {
     const { open, close } = props;
@@ -96,17 +96,25 @@ function Add(props) {
                 setTagTextColorInput("");
                 setTagBgColorInput("");
             } else {
+                let temp = false;
                 for(let tag of TagDB) {
                     if(tag.name === TagInput) {
+                        temp = false;
                         alert("같은 할 일에 태그 중복은 불가능합니다");
+                        break;
                     } else if(tag.color === TagTextColorInput && tag.bgColor === TagBgColorInput) {
+                        temp = false;
                         alert("태그 색상이 중복됩니다");
+                        break;
                     } else {
-                        setTagDB( prev => [...prev, {name: TagInput, color: TagTextColorInput, bgColor: TagBgColorInput}] );
-                        setTagInput("");
-                        setTagTextColorInput("");
-                        setTagBgColorInput("");
+                        temp = true;
                     }
+                }
+                if(temp) {
+                    setTagDB( prev => [...prev, {name: TagInput, color: TagTextColorInput, bgColor: TagBgColorInput}] );
+                    setTagInput("");
+                    setTagTextColorInput("");
+                    setTagBgColorInput("");
                 }
             }
         } else {
@@ -145,27 +153,30 @@ function Add(props) {
     <div className="AddEdit-Conatiner">
         <div className="addEdit-conatiner" ref={AddModal}>
             <div className="title-conatiner">
-                <input onChange={titleInputHandler} placeholder="title" />
+                <input className="title" onChange={titleInputHandler} placeholder="제목을 입력하세요" />
             </div>
             <div className="description-conatiner">
-                <input onChange={descriptionInputHandler} placeholder="description"/>
+                <input className="description" onChange={descriptionInputHandler} placeholder="설명을 입력하세요" />
             </div>
             <div className="tag-create-conatiner">
-                <input onChange={tagInputHandler} value={TagInput} placeholder="tag"/>
-                <label>태그 글자 색상</label>
-                <input onChange={tagTextColorInputHandler} type="color" />
-                <label>태그 배경 색상</label>
-                <input onChange={tagBgColorInputHandler} type="color" />
-                <button onClick={tagAddClickHandler}>태그 생성</button>
+                <input className="tag-create" onChange={tagInputHandler} value={TagInput} placeholder="태그를 입력하세요" />
+                <div>
+                <label>글자색 </label>
+                <input className="tag-create-color" onChange={tagTextColorInputHandler} type="color" />&nbsp;
+                <label>배경색 </label>
+                <input className="tag-create-bg" onChange={tagBgColorInputHandler} type="color" />
+                <button className="tag-create-btn" onClick={tagAddClickHandler}>태그 생성</button>
+                </div>
             </div>
             <div className="tag-container">
             {TagDB?TagDB.map( (tag, idx) => <div className="tag" style={{color: tag.color, background: tag.bgColor}} onClick={tagDeleteClickHandler} key={idx}>{tag.name}</div>):<></>}
             </div>
             <div className="dday-conatiner">
-                <input onChange={ddayInputHandler} type="date" placeholder="dday" />
+                <label>마감일 </label>
+                <input className="dday" onChange={ddayInputHandler} type="date" />
             </div>
             <div className="btn-conatiner">
-                <button onClick={completeBtnClickHandler}>완료</button>
+                <button className="btn" onClick={completeBtnClickHandler}>완료</button>
             </div>
         </div>
     </div>

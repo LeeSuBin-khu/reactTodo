@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch  } from 'react-redux';
 import Add from './modal/Add';
-import '../assets/css/Option.css';
+import '../assets/css/Option.scss';
 
 function Option() {
     const dispatch = useDispatch();
@@ -31,13 +31,13 @@ function Option() {
         <div className="Option-Conatiner">
             <div className="filter-Container">
                 <select onChange={completeViewOptionHandler}>
-                    <option value="">전체보기(완료여부)</option>
+                    <option value="">완료 여부별 보기</option>
                     <option value="complete">완료</option>
                     <option value="incomplete">미완료</option>
                 </select>
             </div>
-            <div className="addDelete-container">
-                <div className="add" onClick={AddOpenHandler}>+</div>
+            <div className="add-container">
+                <div className="add" onClick={AddOpenHandler}>추가</div>
             </div>
             <Add open={AddModalOpen} close={AddCloseHandler} />
         </div>

@@ -1,5 +1,5 @@
 .Clock-Conatiner {
-    /* color: rgb(98, 77, 56); */
-    color: black;
+    color: rgba(0, 0, 0, 0.5);
     font-size: 80px;
+    font-family: sans-serif;
 }

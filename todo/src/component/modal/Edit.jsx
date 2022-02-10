@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch  } from 'react-redux';
 
-import '../../assets/css/modal/AddEdit.css';
+import '../../assets/css/modal/AddEdit.scss';
 
 function Edit(props) {
     const { open, close, todoId } = props;
@@ -14,8 +14,10 @@ function Edit(props) {
     //todo 관련
     const [Title, setTitle] = useState("");
     const [Description, setDescription] = useState("");
-    const [Tag, setTag] = useState([]);
-    const [TagId, setTagId] = useState(0);
+    const [TagInput, setTagInput] = useState("");
+    const [TagTextColorInput, setTagTextColorInput] = useState("");
+    const [TagBgColorInput, setTagBgColorInput] = useState("");
+    const [TagDB, setTagDB] = useState([]);
     const [Dday,setDday] = useState();
 
     const EditModalCloseHandler = ({ target }) => {
@@ -51,8 +53,17 @@ function Edit(props) {
                     if(todo.id === parseInt(todoId)) {
                         setTitle(todo.title);
                         setDescription(todo.description);
-                        setTag(todo.tag);
                         setDday(todo.dday);
+                    }
+                }
+            }
+        }
+        if(localStorage.getItem('tag')) {
+            if(JSON.parse(localStorage.getItem('tag')).length !== 0) {
+                let tagList = JSON.parse(localStorage.getItem('tag'));
+                for(let tag of tagList) {
+                    if(tag.id === parseInt(todoId)) {
+                        setTagDB(tag.tag);
                     }
                 }
             }
@@ -68,17 +79,80 @@ function Edit(props) {
     }
 
     const tagInputHandler = ({ target }) => {
-        setTag(target.value);
+        setTagInput(target.value);
+    }
+
+    const tagTextColorInputHandler = ({ target }) => {
+        setTagTextColorInput(target.value);
+    }
+
+    const tagBgColorInputHandler = ({ target }) => {
+        setTagBgColorInput(target.value);
+    }
+
+    const tagAddClickHandler = () => {
+        if(TagDB.length < 5) {
+            if(TagDB.length === 0) {
+                setTagDB( prev => [...prev, {name: TagInput, color: TagTextColorInput, bgColor: TagBgColorInput}] );
+                setTagInput("");
+                setTagTextColorInput("");
+                setTagBgColorInput("");
+            } else {
+                let temp = false;
+                for(let tag of TagDB) {
+                    if(tag.name === TagInput) {
+                        temp = false;
+                        alert("같은 할 일에 태그 중복은 불가능합니다");
+                        break;
+                    } else if(tag.color === TagTextColorInput && tag.bgColor === TagBgColorInput) {
+                        temp = false;
+                        alert("태그 색상이 중복됩니다");
+                        break;
+                    } else {
+                        temp = true;
+                    }
+                }
+                if(temp) {
+                    setTagDB( prev => [...prev, {name: TagInput, color: TagTextColorInput, bgColor: TagBgColorInput}] );
+                    setTagInput("");
+                    setTagTextColorInput("");
+                    setTagBgColorInput("");
+                }
+            }
+        } else {
+            alert("최대 5개까지 추가할 수 있습니다");
+        }
+    }
+
+    const tagDeleteClickHandler = ({ target }) => {
+        setTagDB(TagDB.filter( tag => tag.name !== target.innerHTML));
     }
 
     const ddayInputHandler = ({ target }) => {
         setDday(target.value);
     }
 
-    const completeBtnClickHandler = () => {
+    const overlayTagColorManageHandler = (tagList, todoList) => {
+        for(let tag of tagList) {
+            for(let newTag of TagDB) {
+                tag.tag.map( i => (i.name === newTag.name?(i.color = newTag.color, i.bgColor = newTag.bgColor, localStorage.setItem('tag', JSON.stringify(tagList)), overlayTagColorManageHandlerForTodo(tag, todoList)):null));
+            }
+        }
+    }
+
+    const overlayTagColorManageHandlerForTodo = (tag, todoList) => {
+        for(let todo of todoList) {
+            if(tag.id === todo.id) {
+                todo.tag = tag.tag;
+                localStorage.setItem('todo', JSON.stringify(todoList));
+            }
+        }
+    }
+
+    const completeBtnClickHandler = async () => {
         if(Title !== "") {
             let todoList = JSON.parse(localStorage.getItem('todo'));
-            // let tagList = JSON.parse(localStorage.getItem('tag'));
+            let tagList = JSON.parse(localStorage.getItem('tag'));
             for(let todo of todoList) {
                 if(todo.id === parseInt(todoId)) {
                     todo.title = Title;
@@ -87,9 +161,15 @@ function Edit(props) {
                     todo.dday = Dday;
                 }
             }
-            // tagList.push({id: TagId, name: Title, color: Description, bgColor: TagId, addDay: `${year}-${month}-${day}`});
+            for(let tag of tagList) {
+                if(tag.id === parseInt(todoId)) {
+                    tag.tag = TagDB;
+                }
+            }
+            await overlayTagColorManageHandler(tagList, todoList);
             localStorage.setItem('todo', JSON.stringify(todoList));
-            // localStorage.setItem('tag', JSON.stringify(tagList));
+            localStorage.setItem('tag', JSON.stringify(tagList));
+            setTagDB([]);
             close();
         } else {
             alert("제목을 입력해주세요")
@@ -100,23 +180,34 @@ function Edit(props) {
     <>
     {open?
     <div className="AddEdit-Conatiner">
-    <div className="addEdit-conatiner" ref={EditModal}>
-        <div className="title-conatiner">
-            <input onChange={titleInputHandler} placeholder="title" value={Title}/>
+        <div className="addEdit-conatiner" ref={EditModal}>
+            <div className="title-conatiner">
+                <input className="title" onChange={titleInputHandler} placeholder="title" value={Title}/>
+            </div>
+            <div className="description-conatiner">
+                <input className="description" onChange={descriptionInputHandler} placeholder="description" value={Description}/>
+            </div>
+            <div className="tag-create-conatiner">
+                <input className="tag-create" onChange={tagInputHandler} value={TagInput} placeholder="태그를 입력하세요" />
+                <div>
+                <label>글자색 </label>
+                <input className="tag-create-color" onChange={tagTextColorInputHandler} type="color" />&nbsp;
+                <label>배경색 </label>
+                <input className="tag-create-bg" onChange={tagBgColorInputHandler} type="color" />
+                <button className="tag-create-btn" onClick={tagAddClickHandler}>태그 생성</button>
+                </div>
+            </div>
+            <div className="tag-container">
+            {TagDB?TagDB.map( (tag, idx) => <div className="tag" style={{color: tag.color, background: tag.bgColor}} onClick={tagDeleteClickHandler} key={idx}>{tag.name}</div>):<></>}
+            </div>
+            <div className="dday-conatiner">
+                <label>마감일 </label>
+                <input className="dday" onChange={ddayInputHandler} type="date" />
+            </div>
+            <div className="btn-conatiner">
+                <button className="btn" onClick={completeBtnClickHandler}>완료</button>
+            </div>
         </div>
-        <div className="description-conatiner">
-            <input onChange={descriptionInputHandler} placeholder="description" value={Description}/>
-        </div>
-        <div className="tag-conatiner">
-            <input onChange={tagInputHandler} placeholder="tag" value={Tag}/>
-        </div>
-        <div className="dday-conatiner">
-            <input onChange={ddayInputHandler} type="date" placeholder="dday" value={Dday}/>
-        </div>
-        <div className="btn-conatiner">
-            <button onClick={completeBtnClickHandler}>완료</button>
-        </div>
-    </div>
     </div>
     :<></>}
     </>

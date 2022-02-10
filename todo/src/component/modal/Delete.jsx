@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch  } from 'react-redux';
 
-import '../../assets/css/modal/Delete.css';
+import '../../assets/css/modal/Delete.scss';
 
 function DeleteTodo(props) {
     const { open, close, todoId, isComplete } = props;
@@ -57,7 +57,7 @@ function DeleteTodo(props) {
     {open?
     <div className="Delete-Container">
     <div className="delete-container" ref={DeleteModal}>
-        <div className="question">삭제하겠습니까?</div>
+        <div className="question">삭제하시겠습니까?</div>
         <div className="btn-container">
             <button className="yes" onClick={yesClickHandler}>예</button>
             <button className="no" onClick={noClickHandler}>아니오</button>

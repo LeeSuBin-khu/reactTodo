@@ -1,0 +1,103 @@
+$text-pri1: rgb(90, 90, 90);
+$text-pri2: rgba(0, 0, 0, 0.5);
+$text-pri3: rgba(143, 143, 143, 0.178);
+
+.AddEdit-Conatiner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(34, 34, 34, 0.63);
+    z-index: 99;
+
+    .addEdit-conatiner {
+        display: inline-flex;
+        flex-direction: column;
+        width: 30vw;
+        min-height: 60vh;
+        background: rgb(255, 255, 255);
+        border-radius: 20px;
+    }
+
+    .tag-container {
+        .tag {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            height: 10px;
+            padding: 7px 7px 7px 7px;
+            margin-right: 7px;
+            margin-bottom: 7px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+    }
+
+    .title, .description, .tag-create {
+        height: 28px;
+        width: 70%;
+        margin-bottom: 30px;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 3px solid $text-pri3;
+    }
+
+    .title, .description, .tag-create:focus {
+        outline: none;
+    }
+
+    .title::placeholder, .description::placeholder, .tag-create::placeholder {
+        color: $text-pri2;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .title-conatiner {
+        margin-left: 70px;
+        margin-top: 100px;
+    }
+
+    .description-conatiner, .tag-create-conatiner, .tag-container, .dday-conatiner {
+        margin-left: 70px;
+        margin-top: 30px;
+    }
+
+    label {
+        color: $text-pri2;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .tag-create-btn {
+        margin-left: 30px;
+        border: none;
+        background: transparent;
+        color: $text-pri2;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .btn-conatiner {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .btn {
+        border: none;
+        background: transparent;
+        color: $text-pri1;
+        font-size: 25px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+}
