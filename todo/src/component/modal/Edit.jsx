@@ -22,7 +22,11 @@ function Edit(props) {
 
     const EditModalCloseHandler = ({ target }) => {
         try {
-            if(!EditModal.current.contains(target)) {
+            if(!EditModal.current.contains(target) && target.className !== "tag") {
+                setTagInput("");
+                setTagTextColorInput("");
+                setTagBgColorInput("");
+                setTagDB([]);
                 close();
             }
         } catch(err) {

@@ -15,7 +15,7 @@ function Clock() {
         } catch(err) {
             console.log(err)
         } finally {
-            console.log("qwer")
+            
         }
         
     }
